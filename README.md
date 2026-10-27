@@ -2,7 +2,7 @@
 
 브라우저에서 사용하는 학교 시간표·일정 알람입니다.
 
-**접속:** https://expandsource.github.io/alram-test/
+**접속:** https://expandsource.github.io/smart-alram/
 
 - 알람 시간·이름·활성화 여부 편집, 5분 미루기
 - 브라우저에서 합성하는 8가지 알람음과 볼륨·반복 설정
