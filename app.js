@@ -45,6 +45,8 @@ let alarmSortTimeoutId = null;
 const clockHoursEl = document.getElementById('clock-hours');
 const clockMinutesEl = document.getElementById('clock-minutes');
 const clockSecondsEl = document.getElementById('clock-seconds');
+const clockPeriodEl = document.getElementById('clock-period');
+let clockFormat = '24';
 const dateDisplayEl = document.getElementById('date-display');
 const nextAlarmTitleEl = document.getElementById('next-alarm-title');
 const nextAlarmTimeEl = document.getElementById('next-alarm-time');
@@ -90,6 +92,30 @@ function initTheme() {
     applyTheme(theme);
     try { localStorage.setItem('school_alarm_theme', theme); } catch (_) {}
   }));
+}
+
+function updateClockDisplay(now = new Date()) {
+  const hour = now.getHours();
+  clockHoursEl.textContent = String(clockFormat === '12' ? hour % 12 || 12 : hour).padStart(2, '0');
+  clockMinutesEl.textContent = String(now.getMinutes()).padStart(2, '0');
+  clockSecondsEl.textContent = String(now.getSeconds()).padStart(2, '0');
+  clockPeriodEl.textContent = hour < 12 ? 'AM' : 'PM';
+  clockPeriodEl.hidden = clockFormat !== '12';
+}
+
+function initClockFormat() {
+  try { clockFormat = localStorage.getItem('school_alarm_clock_format') === '12' ? '12' : '24'; } catch (_) {}
+  const buttons = document.querySelectorAll('[data-clock-format]');
+  const apply = () => {
+    buttons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.clockFormat === clockFormat)));
+    updateClockDisplay();
+  };
+  buttons.forEach(button => button.addEventListener('click', () => {
+    clockFormat = button.dataset.clockFormat;
+    try { localStorage.setItem('school_alarm_clock_format', clockFormat); } catch (_) {}
+    apply();
+  }));
+  apply();
 }
 
 function loadState() {
@@ -529,12 +555,9 @@ function tick() {
   const now = new Date();
   const hours = String(now.getHours()).padStart(2, '0');
   const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
 
   // Update clock UI
-  clockHoursEl.textContent = hours;
-  clockMinutesEl.textContent = minutes;
-  clockSecondsEl.textContent = seconds;
+  updateClockDisplay(now);
   dateDisplayEl.textContent = getKoreanDateString(now);
 
   const currentTimeStr = `${hours}:${minutes}`;
@@ -912,6 +935,7 @@ function bindActions() {
 // ==========================================================================
 function init() {
   initTheme();
+  initClockFormat();
   loadState();
   initControls();
   renderAlarms();

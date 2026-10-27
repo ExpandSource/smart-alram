@@ -42,8 +42,15 @@
       <!-- Dashboard Section (Clock & Next Alarm) -->
       <section class="dashboard-section">
         <div class="glass-card clock-card">
-          <span class="info-label">현재 시간</span>
+          <div class="clock-card-header">
+            <span class="info-label">현재 시간</span>
+            <div class="clock-format-switch" role="group" aria-label="현재 시간 표시 방식">
+              <button type="button" data-clock-format="12" aria-label="12시간 표시 (AM/PM)" aria-pressed="false">12H</button>
+              <button type="button" data-clock-format="24" aria-label="24시간 표시" aria-pressed="true">24H</button>
+            </div>
+          </div>
           <div class="clock-display">
+            <span class="clock-period" id="clock-period" hidden>AM</span>
             <span id="clock-hours">00</span>
             <span class="clock-colon">:</span>
             <span id="clock-minutes">00</span>
