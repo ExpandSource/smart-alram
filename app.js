@@ -1,3 +1,5 @@
+import { initTimetableTools } from './timetable-tools.js';
+
 // ==========================================================================
 // Application State & Default Config
 // ==========================================================================
@@ -665,7 +667,7 @@ function renderAlarms() {
         </label>
       </div>
       <div class="alarm-inputs">
-        <input type="time" class="alarm-time-input" aria-label="알람 시간" value="${alarm.time}" step="900">
+        <input type="time" class="alarm-time-input" aria-label="알람 시간" value="${alarm.time}" step="60">
         <input type="text" class="alarm-title-input" aria-label="알람 이름" placeholder="알람 라벨 입력">
       </div>
       <div class="alarm-item-footer">
@@ -914,6 +916,21 @@ function init() {
   initControls();
   renderAlarms();
   bindActions();
+  initTimetableTools({
+    getAlarms: () => state.alarms.map(({ time, title, enabled }) => ({ time, title, enabled })),
+    applyAlarms: (alarms) => {
+      cancelScheduledAlarmSort();
+      dismissAlarm();
+      state.alarms = alarms.map((alarm, index) => ({ ...alarm, id: `timetable-${Date.now()}-${index}` }));
+      state.snoozeTime = null;
+      state.snoozedAlarmTitle = '';
+      saveState();
+      renderAlarms();
+      updateCountdown();
+      testSoundBtnEl.disabled = false;
+      stopTestBtnEl.disabled = true;
+    }
+  });
 
   // Create AudioContext early so we can check if it starts in a suspended state
   try {

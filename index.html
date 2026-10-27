@@ -154,6 +154,43 @@
         </div>
       </section>
 
+      <section class="glass-card timetable-tools" aria-labelledby="timetable-heading">
+        <h3 id="timetable-heading">내 시간표</h3>
+        <p class="section-description">현재 알람 목록을 이름 붙여 저장하고, 필요할 때 불러오세요.</p>
+        <div class="timetable-library">
+          <div class="library-row">
+            <input id="timetable-name" type="text" maxlength="60" aria-label="저장할 시간표 이름" placeholder="예: 평일 8교시, 방학 시간표">
+            <button type="button" class="btn secondary-btn" id="save-timetable">현재 목록 저장</button>
+          </div>
+          <div class="library-row">
+            <select id="saved-timetables" aria-label="저장한 시간표"><option value="">저장한 시간표가 없습니다</option></select>
+            <button type="button" class="btn secondary-btn" id="load-timetable" disabled>불러오기</button>
+            <button type="button" class="btn outline-btn" id="delete-timetable" disabled>삭제</button>
+          </div>
+        </div>
+        <p id="timetable-status" class="tool-message" role="status"></p>
+        <details id="schedule-builder" class="schedule-builder">
+          <summary>시간표 자동 채우기 <span>수업·휴식 시간을 한 번에 계산</span></summary>
+          <form id="schedule-form">
+            <div class="schedule-fields">
+              <label>시작 시간<input type="time" id="schedule-start" value="09:00" required></label>
+              <label>종료 한도<input type="time" id="schedule-end" value="17:00" required></label>
+              <label>수업·작업 (분)<input type="number" id="schedule-work" value="45" min="1" max="240" required></label>
+              <label>쉬는 시간 (분)<input type="number" id="schedule-rest" value="10" min="0" max="180" required></label>
+              <label>교시·타임 수<input type="number" id="schedule-count" value="8" min="1" max="48" required></label>
+              <label>이름 단위<select id="schedule-unit"><option value="교시">교시</option><option value="타임">타임</option></select></label>
+            </div>
+            <div class="special-heading"><h4>특별 휴식 <span class="info-label">선택 사항</span></h4><button type="button" class="btn secondary-btn" id="add-special-break">+ 식사·특별 휴식</button></div>
+            <p class="section-description">지정한 교시 뒤의 쉬는 시간을 특별 휴식으로 대신합니다. 같은 교시 뒤에 여러 개를 넣으면 차례로 이어집니다.</p>
+            <div id="special-breaks"></div>
+            <p class="section-description">종료 한도 안에서 같은 날의 시간표를 만듭니다. 남는 시간은 비워두며 마지막 수업 뒤에는 쉬는 시간을 넣지 않습니다.</p>
+            <p id="schedule-status" class="tool-message" role="status"></p>
+            <div id="schedule-preview" class="schedule-preview" tabindex="0" role="region" aria-label="생성할 시간표 미리보기"></div>
+            <div class="schedule-apply"><span class="info-label">적용하면 현재 알람 목록이 바뀝니다. 소리 설정은 유지됩니다.</span><button type="submit" class="btn primary-btn" id="apply-schedule">이 시간표 적용</button></div>
+          </form>
+        </details>
+      </section>
+
       <!-- Alarms List Section -->
       <section class="alarms-section">
         <div class="section-header">
